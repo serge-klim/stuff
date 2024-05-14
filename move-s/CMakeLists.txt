@@ -9,4 +9,5 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 #string(REPLACE "-O2" "-Ox" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 
+add_subdirectory(move_s)
 add_subdirectory(benchmark)

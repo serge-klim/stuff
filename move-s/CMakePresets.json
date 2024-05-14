@@ -2,34 +2,53 @@
     "version": 3,
     "configurePresets": [
         {
-            "name": "windows-base",
+          "name": "windows-base",
+          "hidden": true,
+          "generator": "Ninja",
+          "binaryDir": "${sourceDir}/out/build/${presetName}",
+          "installDir": "${sourceDir}/out/install/${presetName}",
+          "cacheVariables": {
+            "MAKE_SHIM": "ON",
+            "PKG_CONFIG_EXECUTABLE": "C:/toolz/pkgconf/pkgconf.exe",
+            "Boost_DIR": "c:/libz/boost-1_84/lib/cmake/Boost-1.84.0",
+            "benchmark_DIR": "c:/libz/benchmark/lib/cmake/benchmark",
+            "toolz_DIR": "${sourceDir}/../tools/project"
+          },
+          "condition": {
+              "type": "equals",
+              "lhs": "${hostSystemName}",
+              "rhs": "Windows"
+          }
+        },
+        {
+            "name": "windows-base-msvc",
             "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+            "inherits": "windows-base",
           "cacheVariables": {
             "CMAKE_C_COMPILER": "cl.exe",
-            "CMAKE_CXX_COMPILER": "cl.exe",
-            "Boost_DIR": "c:/libz/boost-1_81/lib/cmake/Boost-1.81.0",
-            "benchmark_DIR": "c:/libz/benchmark/lib/cmake/benchmark"
-          },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
-            }
+            "CMAKE_CXX_COMPILER": "cl.exe"
+          }
         },
+        {
+            "name": "windows-base-clang",
+            "hidden": true,
+            "inherits": "windows-base",
+          "cacheVariables": {
+            "CMAKE_C_COMPILER": "C:/toolz/llvm/bin/clang-cl.exe",
+            "CMAKE_CXX_COMPILER": "C:/toolz/llvm/bin/clang-cl.exe",
+            "Boost_COMPILER": "vc143"
+          }      
+        },        
         {
             "name": "x64-debug",
             "displayName": "x64 Debug",
-            "inherits": "windows-base",
+            "inherits": "windows-base-msvc",
             "architecture": {
                 "value": "x64",
                 "strategy": "external"
             },
             "cacheVariables": {
-              "CMAKE_BUILD_TYPE": "Debug",
-              "_benchmark_DIR": "c:/libz/benchmark/lib.dbg/cmake/"
+                "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
@@ -37,16 +56,15 @@
             "displayName": "x64 Release",
             "inherits": "x64-debug",
             "cacheVariables": {
-            "CMAKE_BUILD_TYPE": "Release",
-            "_benchmark_DIR": "c:/libz/benchmark/lib/cmake/"
+                "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
-            "name": "x86-debug",
-            "displayName": "x86 Debug",
-            "inherits": "windows-base",
+            "name": "clang-winx64-debug",
+            "displayName": "Clang x64 Debug",
+            "inherits": "windows-base-clang",
             "architecture": {
-                "value": "x86",
+                "value": "x64",
                 "strategy": "external"
             },
             "cacheVariables": {
@@ -54,51 +72,39 @@
             }
         },
         {
-            "name": "x86-release",
-            "displayName": "x86 Release",
-            "inherits": "x86-debug",
+            "name": "clang-winx64-release",
+            "displayName": "Clang x64 Release",
+            "inherits": "windows-base-clang",
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
-            "name": "linux-debug",
-            "displayName": "Linux Debug",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+            "name": "clang-winx64-prof",
+            "displayName": "Clang x64 Profile",
+            "inherits": "windows-base-clang",
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Linux"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-                    "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-                }
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
         },
         {
-            "name": "macos-debug",
-            "displayName": "macOS Debug",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+            "name": "x86-debug",
+            "displayName": "x86 Debug",
+            "inherits": "windows-base-msvc",
+            "architecture": {
+                "value": "x86",
+                "strategy": "external"
+            },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-                    "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-                }
             }
         }
     ]

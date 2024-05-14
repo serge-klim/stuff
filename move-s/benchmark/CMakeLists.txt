@@ -6,7 +6,8 @@ find_package(benchmark REQUIRED)
 add_executable (benchmark
         benchmark.cpp
         fixeds.hpp
-        cool_v4.hpp
+        cool_v6.hpp
+        xstr.hpp
         )
 
 target_link_libraries(benchmark

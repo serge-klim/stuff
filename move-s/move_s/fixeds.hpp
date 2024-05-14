@@ -7,7 +7,7 @@ class FixedSizeString
 {
    enum{ capacity = 32}; 
  public:
-   FixedSizeString(char const* ptr = nullptr) {
+   FixedSizeString(char const* ptr = 0/*nullptr*/) {
       std::size_t len = 0;
       if (ptr) {
          len = std::char_traits<char>::length(ptr);
@@ -17,8 +17,7 @@ class FixedSizeString
       }
       data_[len] = '\0';
    }
-   ~FixedSizeString()
-   {
+   ~FixedSizeString() {
       std::clog << "~Shtring " << this << '{' << data_ << '}' << std::endl;
    }
    bool empty() const { return *data_ == '\0'; }

@@ -6,7 +6,7 @@ class FixedSizeString
 {
    enum{ capacity = 32}; 
  public:
-   FixedSizeString(char const* ptr = nullptr) noexcept {
+   FixedSizeString(char const* ptr = nullptr) {
       std::size_t len = 0;
       if (ptr) {
          len = std::char_traits<char>::length(ptr);
@@ -16,8 +16,8 @@ class FixedSizeString
       }
       data_[len] = '\0';
    }
-   bool empty() const { return *data_ == '\0'; }
-   char const* c_str() const { return data_; }
+   bool empty() const noexcept { return *data_ == '\0'; }
+   char const* c_str() const noexcept { return data_; }
  private:
    char data_[capacity];
 };
